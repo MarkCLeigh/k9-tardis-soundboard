@@ -1,0 +1,17 @@
+{
+  "name": "K-9 TARDIS Audio Console",
+  "short_name": "K-9 Console",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#06172f",
+  "theme_color": "#061b3a",
+  "description": "Offline soundboard for K-9",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
