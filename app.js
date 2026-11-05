@@ -46,7 +46,18 @@ $("stop").onclick=()=>{player.pause();player.currentTime=0;document.querySelecto
 $("replay").onclick=()=>{if(lastClip){const b=[...document.querySelectorAll(".pad")].find(p=>p.dataset.channel===lastClip.channel);playClip(lastClip,b);}};
 $("volume").oninput=e=>{$("volValue").textContent=e.target.value+"%";player.volume=Number(e.target.value)/100;};
 $("channelSelect").onchange=renderLibrary;
-$("fileInput").onchange=async e=>{const files=[...e.target.files];const channel=$("channelSelect").value;for(const file of files){if(!file.type.startsWith("audio/"))continue;await saveClip({channel,name:file.name,blob:file,added:Date.now()});}e.target.value="";await refresh();$("status").textContent=`AUDIO ADDED TO ${channel}`;};
+$("fileInput").onchange=async e=>{
+  const files=[...e.target.files];
+  const channel=$("channelSelect").value;
+  for(const file of files){
+    const isAudio=file.type.startsWith("audio/") || /\.(mp3|wav|m4a)$/i.test(file.name);
+    if(!isAudio)continue;
+    await saveClip({channel,name:file.name,blob:file,added:Date.now()});
+  }
+  e.target.value="";
+  await refresh();
+  $("status").textContent=`AUDIO ADDED TO ${channel}`;
+};
 CHANNELS.forEach(([key])=>{const o=document.createElement("option");o.value=key;o.textContent=key;$("channelSelect").append(o);});
 (async()=>{try{db=await openDB();await refresh();$("status").textContent="AUDIO SYSTEM READY";}catch(e){$("status").textContent="LOCAL AUDIO STORAGE UNAVAILABLE";console.error(e);}})();
 if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(console.warn);
